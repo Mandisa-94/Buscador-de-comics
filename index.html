@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Foundation for Sites</title>
+  <title>Buscador de comics</title>
   <link rel="stylesheet" href="css/app.css">
 </head>
 
@@ -55,73 +55,14 @@
       <p class="cell small-8 header">1111 coincidencias</p>
     </div>
 
-     <div class="grid-x grid-padding-x large-up-5" id="cards-container">
-      <!-- <div class="cell">
-        <div class="card" style="width: 300px;">
-          <div class="card-divider">
-            This is a header
-          </div>
-          <img src="assets/img/generic/rectangle-1.jpg">
-          <div class="card-section">
-            <h4>This is a card.</h4>
-            <p>It has an easy to override visual style, and is appropriately subdued.</p>
-          </div>
-        </div>
-      </div>
-      <div class="cell">
-        <div class="card" style="width: 300px;">
-          <div class="card-divider">
-            This is a header
-          </div>
-          <img src="assets/img/generic/rectangle-1.jpg">
-          <div class="card-section">
-            <h4>This is a card.</h4>
-            <p>It has an easy to override visual style, and is appropriately subdued.</p>
-          </div>
-        </div>
-      </div>
-      <div class="cell">
-        <div class="card" style="width: 300px;">
-          <div class="card-divider">
-            This is a header
-          </div>
-          <img src="assets/img/generic/rectangle-1.jpg">
-          <div class="card-section">
-            <h4>This is a card.</h4>
-            <p>It has an easy to override visual style, and is appropriately subdued.</p>
-          </div>
-        </div>
-      </div>
-      <div class="cell">
-        <div class="card" style="width: 300px;">
-          <div class="card-divider">
-            This is a header
-          </div>
-          <img src="assets/img/generic/rectangle-1.jpg">
-          <div class="card-section">
-            <h4>This is a card.</h4>
-            <p>It has an easy to override visual style, and is appropriately subdued.</p>
-          </div>
-        </div>
-      </div>
-      <div class="cell">
-        <div class="card" style="width: 300px;">
-          <div class="card-divider">
-            This is a header
-          </div>
-          <img src="assets/img/generic/rectangle-1.jpg">
-          <div class="card-section">
-            <h4>This is a card.</h4>
-            <p>It has an easy to override visual style, and is appropriately subdued.</p>
-          </div>
-        </div>
-      </div> -->
+    <div class="grid-x grid-padding-x large-up-5" id="cards-container">
+
     </div>
   </div>
 
   <nav aria-label="Pagination">
     <ul class="pagination text-center">
-      <li class="pagination-previous disabled">Previous</li>
+      <li class="pagination-previous disabled" id="previous-page">Previous</li>
       <li class="current"><span class="show-for-sr">You're on page</span> 1</li>
       <li><a href="#" aria-label="Page 2">2</a></li>
       <li><a href="#" aria-label="Page 3">3</a></li>
@@ -129,10 +70,11 @@
       <li class="ellipsis"></li>
       <li><a href="#" aria-label="Page 12">12</a></li>
       <li><a href="#" aria-label="Page 13">13</a></li>
-      <li class="pagination-next"><a href="#" aria-label="Next page">Next</a></li>
+      <li class="pagination-next" id="next-page"><a href="#" aria-label="Next page">Next</a></li>
     </ul>
   </nav>
   </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.18.0/js/md5.min.js" integrity="sha512-Hmp6qDy9imQmd15Ds1WQJ3uoyGCUz5myyr5ijainC1z+tP7wuXcze5ZZR3dF7+rkRALfNy7jcfgS5hH8wJ/2dQ==" crossorigin="anonymous"></script>
   <script src="node_modules/jquery/dist/jquery.js"></script>
   <script src="node_modules/what-input/dist/what-input.js"></script>
