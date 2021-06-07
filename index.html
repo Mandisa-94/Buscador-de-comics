@@ -25,27 +25,27 @@
       </div>
       <div class="cell small-8 grid-margin-x grid-x" id="responsive-menu">
         <div class="cell">
-          <h2 class="h4">Busqueda</h2>
+          <h2 class="h4">Búsqueda</h2>
         </div>
         <div class="cell small-4">
-          <input type="search" placeholder="Search">
+          <input type="search" placeholder="Ingresá tu búsqueda" id="search-input">
         </div>
         <div class="cell small-3 text-right">
-          <input type="radio" name="pokemon" value="Red" id="pokemonRed" required><label for="pokemonRed">Comics</label>
-          <input type="radio" name="pokemon" value="Blue" id="pokemonBlue"><label for="pokemonBlue">Personajes</label>
+          <input type="radio" name="cards" value="comics" id="show-comics" required checked><label for="show-comics">Comics</label>
+          <input type="radio" name="cards" value="characters" id="show-characters"><label for="show-characters">Personajes</label>
         </div>
         <div class="cell small-3">
-          <label class="cell">Select Menu
-            <select>
-              <option value="husker">Husker</option>
-              <option value="starbuck">Starbuck</option>
-              <option value="hotdog">Hot Dog</option>
-              <option value="apollo">Apollo</option>
+          <label class="cell">Orden
+            <select id="order-input">
+              <option value="a-z">A-Z</option>
+              <option value="z-a">Z-A</option>
+              <option value="newest">Más nuevos</option>
+              <option value="oldest">Más viejos</option>
             </select>
           </label>
         </div>
         <div class="cell small-2 text-center">
-          <button type="button" class="button">Search</button>
+          <button type="submit" onclick="handlerButtonSubmit(e)" class="button">Buscar</button>
         </div>
       </div>
     </div>
