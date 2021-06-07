@@ -67,9 +67,10 @@ const createCharactersCards = async () => {
     </div>
     `;
   });
-  return cards
+  return array.from(cards)
+ 
 };
-printAll(createCharactersCards())
+printAll([createCharactersCards()])
 
 // const clickOnCharacter = async (id) => {
 //   const info = await getData(`${urlBase}${charactersUrl}/${id}${urlKeys}`);
