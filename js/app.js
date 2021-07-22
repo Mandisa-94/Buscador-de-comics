@@ -27,11 +27,10 @@ const urlComics = `/v1/public/comics`;
 
 // FUNCION QUE HACE EL FECTH DE LA URL QUE LE PASEMOS - RECIBE STRING
 const getData = async (url) =>
-  await fetch(url)
+await fetch(url)
     .then((resp) => resp.json())
     .then((resp) => resp.data.results)
     .catch((err) => console.error(err));
-
 
 // FUNCION QUE LIMPIA EL CONTAINER DE LAS CARDS
 const cleanContainer = () =>{
@@ -47,17 +46,11 @@ const printAll = (arr) => {
 
 // FUNCION QUE TRAE LOS CHARACTERS SEGUN EL OFFSET QUE LE PASEMOS, CREA LAS CARDS Y LAS IMPRIME EN EL CONTAINER
 const fetchAndPrintCharacters = async (offset) =>{
-  let arr = await getData(urlBase + urlCharacters + urlKeys);
-  let cards = createCharactersCards(arr);
-  printAll([cards])
-}
-
-// FUNCION QUE TRAE LOS COMICS SEGUN EL OFFSET QUE LE PASEMOS, CREA LAS CARDS Y LAS IMPRIME EN EL CONTAINER
-const fetchAndPrintComics = async(offset) =>{
   const urlOffsetKeys = `?limit=20&offset=${offset}&ts=${timestamp}&apikey=${publicKey}&hash=${hash}`;
-  const data = await getData(urlBase + urlComics + urlOffsetKeys)
-  const cards = createComicsCards(data);
-  printAll([cards])
+  let arr = await getData(urlBase + urlCharacters + urlOffsetKeys);
+  let info = createCharactersCards(arr); 
+ return  printAll([info])
+ 
 }
 
 // FUNCION QUE CREA LAS CARDS DE LOS CHARACTERS, UNA DESPUÉS DE LA OTRA EN UNA SOLA VARIABLE - RECIBE EL ARRAY DEL FETCH Y RETORNA UN STRING CON TODAS LAS CARDS
@@ -70,9 +63,9 @@ const createCharactersCards =  (arr) => {
       thumbnail: { path, extension },
     } = character;
     cards += `
-    <div class="cell">
-    <div class="card" style="width: 300px"; onclick= "clickOnCharacter(${id})">
-    <img src="${
+    <div class="cell shrink">
+    <div class="card align-self-midle" style="width: 350px; height:600px; "onclick= "clickOnCharacter(${id})">
+    <img class="comic-card-image" src="${
       path === pathNonFoundNowanted ? pathNonFoundWanted : path
     }.${extension}" alt="${name}">
     <div class="card-section">
@@ -82,67 +75,111 @@ const createCharactersCards =  (arr) => {
     </div>
     `;
   });
-  return cards
+  return (cards)
 };
 
+
+
 // FUNCION QUE CREA LA CARD DE UN PERSONAJE SOLO
-const printOneCharacter = (arr) => {
-  let characterCard ='';
-  let comicsCard ='';
-  arr.forEach((characters) => {
-    const {
-      name,
-      thumbnail: { path, extension },
-      description,
-    } = characters;
-    characterCard += `
-    <div class="cell">
-      <div class="card small-6">
-        <img src="${
-          path === pathNonFoundNowanted ? pathNonFoundWanted : path
-        }.${extension}" alt="${name}">
-        <h4>${name}</h4>
-        <p>${description}</p>
-    </div>
-    `;
-    const comics = characters.comics.items;
-    comics.forEach((comic) => {
-      const { resourceURI } = comic;
-      comicsCard = createComicsCards(getData(resourceURI + urlKeys));
-    });
-  });
-  printAll([characterCard, comicsCard])
-};
+const printOneCharacter =  ([characters]) => {
+  console.log(characters);
+  const {
+    name,
+    thumbnail: { path, extension },
+    description,
+    comics: {items}
+  } = characters;
+  
+  const characterCard = `
+  <div class="cell small-4">
+  <img src="${
+    path === pathNonFoundNowanted ? pathNonFoundWanted : path
+  }.${extension}" alt="${name}">
+  </div>
+  
+  <div class="cell small-6">
+  <h4>${name}</h4>
+  <p>${description}</p>
+  </div>
+  </div>
+  <div class= "grid-x"></div>
+  `;
+  
+     printInfoCaracters(items)
+    return characterCard
+  };
+
+ 
+
+  const printInfoCaracters =  (items) => {
+    console.log(items);
+       items.forEach((info)=>{
+        const {
+          resourceURI,
+          name
+        } = info
+        getComicsByCharacter (resourceURI)
+      })
+  }
+
+  const getComicsByCharacter = async (url) =>{
+    const data = await  getData(url + urlKeys)
+    console.log(data);
+    const resultsAmount = data.length;
+    const cards = createComicsCards(data)
+    printAll([cards])
+  }
+
+ 
 
 // FUNCION QUE TRAE EL CHARACTER SEGUN EL ID QUE LE PASEMOS, CREA LA CARD Y LA IMPRIME EN EL CONTAINER
 const clickOnCharacter = async (id) => {
-  const info = await getData(`${urlBase}${urlCharacters}/${id}${urlKeys}`);
-  printOneCharacter(info);
+  const data = await getData(`${urlBase}${urlCharacters}/${id}${urlKeys}`);
+  const card = await printOneCharacter(data)
+ cleanContainer();
+  printAll([card]);
+ 
 };
+
+// FUNCION QUE TRAE LOS COMICS SEGUN EL OFFSET QUE LE PASEMOS, CREA LAS CARDS Y LAS IMPRIME EN EL CONTAINER
+const fetchAndPrintComics = async(offset) =>{
+  const urlOffsetKeys = `?limit=20&offset=${offset}&ts=${timestamp}&apikey=${publicKey}&hash=${hash}`;
+  const data = await getData(urlBase + urlComics + urlOffsetKeys)
+  const cards = createComicsCards(data);
+  printAll([cards])
+}
+
+
 
 // FUNCION QUE CREA CARDS DE COMICS - RECIBE UN ARRAY Y DEVUELVE UN STRING
 const createComicsCards = (comics) => {
   let cards = '';
+  
   comics.forEach((comic) => {
     const {
       id,
       title,
       thumbnail: { extension, path },
     } = comic;
+    
     const img = `${path}.${extension}`;
-    cards += `<div class="cell">
-            <div class="card" style="width: 250px; height:600px;" onclick="clickOnComic(${id})">
-            <figure>
-            <img class="comic-card-image" src=${img}>
+    cards += `<div class="cell  shrink">
+            <div class="card align-self-midle " style="width: 350px; height:600px;" onclick="clickOnComic(${id})">
+            <figure >
+            <img class="comic-card-image adapt" src=${
+              path === pathNonFoundNowanted ? pathNonFoundWanted : path
+            }.${extension}>
             </figure>
             <div class="card-section">
-                <h4>${title}</h4>
+            <h4>${title}</h4>
             </div>
             </div>
-        </div>`;
-      });
-  return cards
-};
+            </div>
+        `
+      });      
+      return cards
+    };
+{/* </div> */}
 
 // FUNCION QUE TRAE LOS CHARACTERS DEL COMIC, RECIBE LA URL Y DEVUELVE UN STR CON EL HTML DE LAS CARDS Y EL RESULTADO
 const getCharactersByComic = async (url) =>{
@@ -281,3 +318,21 @@ getId('show-characters').addEventListener('change', (e) =>{
   }
   return selectedCards
 })
+
+
+// FUNCION QUE CAMBIA LAS OPCIONES DE ORDEN SEGÚN MOSTREMOS LOS COMICS O LOS CHARACTERS
+const changeOrderOptions = (choice) =>{
+  if(choice === 'comics'){
+    getId('order-input').innerHTML = '<option value="a-z">A-Z</option><option value="z-a">Z-A</option><option value="newest">Más nuevos</option><option value="oldest">Más viejos</option>'
+  } else{
+    getId('order-input').innerHTML = '<option value="a-z">A-Z</option><option value="z-a">Z-A</option>'
+  }
+}
+
+// EVENTO ON LOAD QUE CARGA LOS COMICS COMO OPCION DEFAULT EN LA PAGINA
+window.addEventListener('load', ()=>{
+  fetchAndPrintComics(offset)
+})
+
+
+
