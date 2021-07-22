@@ -7,14 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Buscador de comics</title>
   <link rel="stylesheet" href="css/app.css">
+  <link rel="shortcut icon" href="img/hulkFavicon.png">
+  
 </head>
 
 <body>
-  <div class="grid-container full" style="background-color: blue;">
+  <div class="grid-container full">
     <!-- TITULO Y BANNER -->
     <div class="grid-x  small-12">
       <div class="cell small-12  text-center">
-        <h1>Ada Comics</h1>
+        <h1 class="title">ADA COMICS</h1>
       </div>
       <!-- <div class=" cell small-12 medium-6 header text-center"> -->
       <div class="cell small-12" style="background-color: black;">
@@ -28,10 +30,10 @@
 
     <!-- MENU BUSQUEDA -->
     <div class="grid-container full">
-      <div class="grid-x align-center grid-padding-x">
+      <div class="grid-x align-center grid-padding-x margin">
         <!-- MENU HAMBURGUESA -->
 
-        <div class="cell small-12" data-responsive-toggle="responsive-menu" data-hide-for="medium">
+        <div class="cell small-12 bottom" data-responsive-toggle="responsive-menu" data-hide-for="medium">
           <button class="menu-icon" type="button" data-toggle="responsive-menu"></button>
           <!-- <div class="title-bar-title" style="color: white;" >Menu</div> -->
         </div>
@@ -44,13 +46,13 @@
           </div>
 
           <div class="cell large-2">
-            <div class="cell">
+            <div class="cell left">
               <input type="radio" name="cards" value="comics" id="show-comics" required checked>
-              <label for="show-comics" style="color: white;">Comics</label>
+              <label for="show-comics" style="color: white;" >Comics</label>
             </div>
-            <div class="cell">
+            <div class="cell left">
               <input type="radio" name="cards" value="characters" id="show-characters">
-              <label for="show-characters" style="color: white;">Personajes</label>
+              <label for="show-characters" style="color: white;" >Personajes</label>
             </div>
           </div>
 
@@ -71,7 +73,7 @@
 
 
     <div class="grid-x grid-padding-x align-center medium-6 small-12" id="results-header-container">
-      <h3 class="h5 cell small-8 header ">Resultados</h3>
+      <h3 class="h5 cell small-8 header ">Resultados:</h3>
       <p class="cell small-8 header" id="results-amount">0 coincidencias</p>
     </div>
 
@@ -86,13 +88,13 @@
       <nav aria-label="Pagination" class="cell align-center">
         <ul class="pagination text-center">
           <li class="pagination-previous disabled" id="previous-page">Previous</li>
-          <li class="current"><span class="show-for-sr">You're on page</span> 1</li>
+          <!-- <li class="current"><span class="show-for-sr">You're on page</span> 1</li>
           <li><a href="#" aria-label="Page 2">2</a></li>
           <li><a href="#" aria-label="Page 3">3</a></li>
           <li><a href="#" aria-label="Page 4">4</a></li>
           <li class="ellipsis"></li>
           <li><a href="#" aria-label="Page 12">12</a></li>
-          <li><a href="#" aria-label="Page 13">13</a></li>
+          <li><a href="#" aria-label="Page 13">13</a></li> -->
           <li class="pagination-next" id="next-page"><a href="#" aria-label="Next page">Next</a></li>
         </ul>
       </nav>
