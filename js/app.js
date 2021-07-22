@@ -64,7 +64,7 @@ const createCharactersCards =  (arr) => {
     } = character;
     cards += `
     <div class="cell shrink">
-    <div class="card align-self-midle" style="width: 350px; height:600px; "onclick= "clickOnCharacter(${id})">
+    <div class="card align-self-midle adapt" style="width: 350px; height:600px; "onclick= "clickOnCharacter(${id})">
     <img class="comic-card-image" src="${
       path === pathNonFoundNowanted ? pathNonFoundWanted : path
     }.${extension}" alt="${name}">
@@ -73,7 +73,8 @@ const createCharactersCards =  (arr) => {
     </div>
     </div>
     </div>
-    `;
+    `
+    responsive();
   });
   return (cards)
 };
@@ -164,7 +165,7 @@ const createComicsCards = (comics) => {
     
     const img = `${path}.${extension}`;
     cards += `<div class="cell  shrink">
-            <div class="card align-self-midle " style="width: 350px; height:600px;" onclick="clickOnComic(${id})">
+            <div class="card align-self-midle adapt" style="width: 350px; height:600px;" onclick="clickOnComic(${id})">
             <figure >
             <img class="comic-card-image adapt" src=${
               path === pathNonFoundNowanted ? pathNonFoundWanted : path
@@ -176,6 +177,7 @@ const createComicsCards = (comics) => {
             </div>
             </div>
         `
+        responsive()
       });      
       return cards
     };
@@ -336,3 +338,12 @@ window.addEventListener('load', ()=>{
 
 
 
+const  responsive = async () => {
+  await getData()
+  const adapt =  document.querySelectorAll('.adapt')
+  console.log(adapt);
+  if(window.screen.width < 400){
+    adapt.forEach(card => card.style.width = '250px')
+    adapt.forEach(card => card.style.height = '380px')
+  }
+}
