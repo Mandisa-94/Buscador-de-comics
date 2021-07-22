@@ -40,7 +40,7 @@
 
           <div class="cell large-2">
             <h2 class="h4">Búsqueda</h2>
-            <input type="search" placeholder="Ingresá tu búsqueda" id="search-input">
+            <input type="search" placeholder="Ingresá tu búsqueda" id="search-input" onkeyup="handlerFetch()">
           </div>
 
           <div class="cell large-2">
@@ -57,25 +57,22 @@
           <div class="cell large-2 ">
             <label class="cell" style="color: white;">
               <h2 class="h4">Orden</h2>
-              <select id="order-input" style="color: white;">
-                <option value="a-z">A-Z</option>
-                <option value="z-a">Z-A</option>
-                <option value="newest">Más nuevos</option>
-                <option value="oldest">Más viejos</option>
+              <select id="order-input" style="color: white;" onchange="handlerFetch()">
+                <option value="title">A-Z</option>
+                <option value="-title">Z-A</option>
+                <option value="-focDate">Más nuevos</option>
+                <option value="focDate">Más viejos</option>
               </select>
             </label>
           </div>
         </div>
       </div>
-      <!-- <div class="cell small-2 text-center">
-          <button type="submit" onclick="handlerButtonSubmit(e)" class="button">Buscar</button>
-        </div> -->
     </div>
 
 
-    <div class="grid-x grid-padding-x align-center medium-6 small-12">
+    <div class="grid-x grid-padding-x align-center medium-6 small-12" id="results-header-container">
       <h3 class="h5 cell small-8 header ">Resultados</h3>
-      <p class="cell small-8 header">1111 coincidencias</p>
+      <p class="cell small-8 header" id="results-amount">0 coincidencias</p>
     </div>
 
 

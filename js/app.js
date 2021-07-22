@@ -18,9 +18,9 @@ const urlKeys = `?ts=${timestamp}&apikey=${publicKey}&hash=${hash}`;
 const urlCharacters = "/v1/public/characters";
 const urlComics = `/v1/public/comics`;
 const pathNonFoundNowanted =
-"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available";
+  "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available";
 const pathNonFoundWanted =
-"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/portrait_uncanny";
+  "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/portrait_uncanny";
 let offset = 0;
 let selectedCards = "comics";
 
@@ -28,7 +28,7 @@ let selectedCards = "comics";
 
 // FUNCION QUE HACE EL FECTH DE LA URL QUE LE PASEMOS - RECIBE STRING
 const getData = async (url) =>
-await fetch(url)
+  await fetch(url)
     .then((resp) => resp.json())
     .then((resp) => resp.data.results)
     .catch((err) => console.error(err));
@@ -64,29 +64,26 @@ const getURL = (offset) => {
 
 const fetchAndPrintCharacters = async (offset) => {
   const url = getURL(offset);
+  console.log(url);
   let arr = await getData(url);
+  showResultsAmount(url);
   let cards = createCharactersCards(arr);
   cleanContainer();
+  toggleResultsHeader('flex');
   printAll([cards]);
 };
 
 // FUNCION QUE TRAE LOS COMICS SEGUN EL OFFSET QUE LE PASEMOS, CREA LAS CARDS Y LAS IMPRIME EN EL CONTAINER
 const fetchAndPrintComics = async (offset) => {
   const url = getURL(offset);
+  console.log(url);
   const data = await getData(url);
+  showResultsAmount(url);
   const cards = createComicsCards(data);
   cleanContainer();
+  toggleResultsHeader('flex');
   printAll([cards]);
 };
-
-// const fetchAndPrintCharacters = async (offset) =>{
-//   const urlOffsetKeys = `?limit=20&offset=${offset}&ts=${timestamp}&apikey=${publicKey}&hash=${hash}`;
-//   let arr = await getData(urlBase + urlCharacters + urlOffsetKeys);
-//   let info = createCharactersCards(arr); 
-//  return  printAll([info])
- 
-// }
-
 
 // FUNCION QUE CREA LAS CARDS DE LOS CHARACTERS, UNA DESPUÉS DE LA OTRA EN UNA SOLA VARIABLE - RECIBE EL ARRAY DEL FETCH Y RETORNA UN STRING CON TODAS LAS CARDS
 const createCharactersCards = (arr) => {
@@ -108,26 +105,23 @@ const createCharactersCards = (arr) => {
     </div>
     </div>
     </div>
-    `
+    `;
     responsive();
   });
 
   return cards;
 };
 
-
-
 // FUNCION QUE CREA LA CARD DE UN PERSONAJE SOLO
 
-const printOneCharacter =  ([characters]) => {
-  console.log(characters);
+const printOneCharacter = ([characters]) => {
   const {
     name,
     thumbnail: { path, extension },
     description,
-    comics: {items}
+    comics: { items },
   } = characters;
-  
+
   const characterCard = `
   <div class="cell small-4">
   <img src="${
@@ -142,63 +136,46 @@ const printOneCharacter =  ([characters]) => {
   </div>
   <div class= "grid-x"></div>
   `;
-  
-     printInfoCaracters(items)
-    return characterCard
-  };
 
- 
+  printInfoCaracters(items);
+  return characterCard;
+};
 
-  const printInfoCaracters =  (items) => {
-    console.log(items);
-       items.forEach((info)=>{
-        const {
-          resourceURI,
-          name
-        } = info
-        getComicsByCharacter (resourceURI)
-      })
-  }
+const printInfoCaracters = (items) => {
+  items.forEach((info) => {
+    const { resourceURI, name } = info;
+    getComicsByCharacter(resourceURI);
+  });
+};
 
-  const getComicsByCharacter = async (url) =>{
-    const data = await  getData(url + urlKeys)
-    console.log(data);
-    const resultsAmount = data.length;
-    const cards = createComicsCards(data)
-    printAll([cards])
-  }
-
+const getComicsByCharacter = async (url) => {
+  const data = await getData(url + urlKeys);
+  console.log(data);
+  const resultsAmount = data.length;
+  const cards = createComicsCards(data);
+  printAll([cards]);
+};
 
 // FUNCION QUE TRAE EL CHARACTER SEGUN EL ID QUE LE PASEMOS, CREA LA CARD Y LA IMPRIME EN EL CONTAINER
 const clickOnCharacter = async (id) => {
   const data = await getData(`${urlBase}${urlCharacters}/${id}${urlKeys}`);
-  const card = await printOneCharacter(data)
- cleanContainer();
+  const card = printOneCharacter(data);
+  toggleResultsHeader('none');
+  cleanContainer();
   printAll([card]);
- 
 };
-
-// FUNCION QUE TRAE LOS COMICS SEGUN EL OFFSET QUE LE PASEMOS, CREA LAS CARDS Y LAS IMPRIME EN EL CONTAINER
-// const fetchAndPrintComics = async(offset) =>{
-//   const urlOffsetKeys = `?limit=20&offset=${offset}&ts=${timestamp}&apikey=${publicKey}&hash=${hash}`;
-//   const data = await getData(urlBase + urlComics + urlOffsetKeys)
-//   const cards = createComicsCards(data);
-//   printAll([cards])
-// }
-
-
 
 // FUNCION QUE CREA CARDS DE COMICS - RECIBE UN ARRAY Y DEVUELVE UN STRING
 const createComicsCards = (comics) => {
-  let cards = '';
-  
+  let cards = "";
+
   comics.forEach((comic) => {
     const {
       id,
       title,
       thumbnail: { extension, path },
     } = comic;
-    
+
     const img = `${path}.${extension}`;
     cards += `<div class="cell  shrink">
             <div class="card align-self-midle adapt" style="width: 350px; height:600px;" onclick="clickOnComic(${id})">
@@ -212,11 +189,11 @@ const createComicsCards = (comics) => {
             </div>
             </div>
             </div>
-        `
-        responsive()
-      });      
-      return cards
-    };
+        `;
+    responsive();
+  });
+  return cards;
+};
 
 // FUNCION QUE TRAE LOS CHARACTERS DEL COMIC, RECIBE LA URL Y DEVUELVE UN STR CON EL HTML DE LAS CARDS Y EL RESULTADO
 const getCharactersByComic = async (url) => {
@@ -282,33 +259,27 @@ const clickOnComic = async (id) => {
   const urlComicId = `/v1/public/comics/${id}`;
   const data = await getData(urlBase + urlComicId + urlKeys);
   const card = await createComicCard(data);
+  toggleResultsHeader('none');
   cleanContainer();
   printAll([card]);
 };
 
-// Funcion que multiplica el numero de la pagina clickeada por 20 y le resta 20 (ya que la pag uno es offset 0)
-// const changeOffset = (page) =>{
-//   offset = page * 20 - 20;
-//   return offset
-// }
-
 //Función que toma el fetch de la api y retorna el total de comics existentes
-const getTotalComics = (resp) => resp.data.total;
+const getTotalComics = async (url) => 
+  await fetch(url)
+  .then((resp) => resp.json())
+  .then((resp) => resp.data.total)
+  .catch((err) => console.error(err));
 
-//Funcion NO TESTEADA que chequea cuantas páginas deberían existir de acuerdo a la cantidad total de comics y cuantos comics quedan para la ultima pagina.
-// const checkAmountPages = (total) => {
-//   let totalPages;
-//   const rest = total % 20;
-//   const division = total / 20;
-//   if (rest === 0) {
-//     totalPages = division;
-//   } else {
-//     totalPages = {
-//       total: division + 1,
-//       lastPage: rest,
-//     };
-//   }
-// };
+
+const showResultsAmount = async (url) =>{
+  const total = await getTotalComics(url);
+  getId('results-amount').innerText = `${total} conincidencias`
+}
+
+const toggleResultsHeader = (display) =>{
+  getId('results-header-container').style.display = display;
+}
 
 //Evento del boton de Previous page, le resta 20 comics al offset(una pagina) y lo retorna al ambito global
 getId("previous-page").addEventListener("click", () => {
@@ -334,7 +305,6 @@ getId("next-page").addEventListener("click", () => {
 });
 
 // CAMBIAR ENTRE CHARACTERS Y COMICS -- TEMPORAL, DESPUES LO TENEMOS QUE ADAPTAR AL BOTON
-
 
 // EVENTO APLICADO AL RADIO BUTTON DE SHOW COMICS. LIMPIA EL CONTENEDOR E IMPRIME LOS COMICS SEGUN EL OFFSET
 getId("show-comics").addEventListener("change", (e) => {
@@ -369,31 +339,24 @@ const changeOrderOptions = (choice) => {
   }
 };
 
-getId("order-input").addEventListener("change", (e) => {
-  console.log('change');
-  selectedCards === 'comics' ? fetchAndPrintComics(offset) : fetchAndPrintCharacters(offset)
-});
-
-const handlerButtonSubmit = () =>{
-  selectedCards === 'comics' ? fetchAndPrintComics(offset) : fetchAndPrintCharacters(offset)
-}
-
+// Handler de evento que se le pasa al input para que haga el fetch segun las cards seleccionadas sean comics o characters
+const handlerFetch = () => {
+  selectedCards === "comics"
+    ? fetchAndPrintComics(offset)
+    : fetchAndPrintCharacters(offset);
+};
 
 // EVENTO ON LOAD QUE CARGA LOS COMICS COMO OPCION DEFAULT EN LA PAGINA
 window.addEventListener("load", () => {
   fetchAndPrintComics(offset);
 });
 
-
-
-
-const  responsive = async () => {
-  await getData()
-  const adapt =  document.querySelectorAll('.adapt')
+const responsive = async () => {
+  await getData();
+  const adapt = document.querySelectorAll(".adapt");
   console.log(adapt);
-  if(window.screen.width < 400){
-    adapt.forEach(card => card.style.width = '250px')
-    adapt.forEach(card => card.style.height = '380px')
+  if (window.screen.width < 400) {
+    adapt.forEach((card) => (card.style.width = "250px"));
+    adapt.forEach((card) => (card.style.height = "380px"));
   }
-}
-
+};
