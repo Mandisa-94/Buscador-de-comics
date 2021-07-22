@@ -16,12 +16,13 @@ const hash = md5(timestamp + privateKey + publicKey);
 const urlBase = "http://gateway.marvel.com/";
 const urlKeys = `?ts=${timestamp}&apikey=${publicKey}&hash=${hash}`;
 const urlCharacters = "/v1/public/characters";
-const pathNonFoundNowanted =
-  "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available";
-const pathNonFoundWanted =
-  "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/portrait_uncanny";
-let offset = 0;
 const urlComics = `/v1/public/comics`;
+const pathNonFoundNowanted =
+"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available";
+const pathNonFoundWanted =
+"http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/portrait_uncanny";
+let offset = 0;
+let selectedCards = "comics";
 
 //-------------------------------- FUNCTION THAT FETCHS THE DATA FROM THE API --------------------------------
 
@@ -33,18 +34,51 @@ await fetch(url)
     .catch((err) => console.error(err));
 
 // FUNCION QUE LIMPIA EL CONTAINER DE LAS CARDS
-const cleanContainer = () =>{
+const cleanContainer = () => {
   getId("cards-container").innerHTML = "";
-}
+};
 
 // FUNCION QUE IMPRIME EN EL CONTENEDOR TODO LO QUE LE PASEMOS, EN ORDEN - RECIBE ARRAY SINO TIRA ERROR
 const printAll = (arr) => {
-  arr.forEach(html => {
-    getId("cards-container").insertAdjacentHTML('beforeend', html);
+  arr.forEach((html) => {
+    getId("cards-container").insertAdjacentHTML("beforeend", html);
   });
-}
+};
+
+// FUNCION QUE CHEQUEA QUE DESEAMOS MOSTRAR, EN QUE ORDEN Y SI QUEREMOS FILTRARLO PARA DEVOLVER LA URL PARA HACERLE EL FETCH
+const getURL = (offset) => {
+  let finalUrl = urlBase;
+  finalUrl += selectedCards === "comics" ? urlComics : urlCharacters;
+  finalUrl += `?limit=20&offset=${offset}&ts=${timestamp}&apikey=${publicKey}&hash=${hash}`;
+  finalUrl += `&orderBy=${getId("order-input").value}`;
+  if (getId("search-input").value !== "") {
+    finalUrl +=
+      selectedCards === "comics"
+        ? `&titleStartsWith=${getId("search-input").value}`
+        : `&nameStartsWith=${getId("search-input").value}`;
+  }
+  return finalUrl;
+};
 
 // FUNCION QUE TRAE LOS CHARACTERS SEGUN EL OFFSET QUE LE PASEMOS, CREA LAS CARDS Y LAS IMPRIME EN EL CONTAINER
+
+const fetchAndPrintCharacters = async (offset) => {
+  const url = getURL(offset);
+  let arr = await getData(url);
+  let cards = createCharactersCards(arr);
+  cleanContainer();
+  printAll([cards]);
+};
+
+// FUNCION QUE TRAE LOS COMICS SEGUN EL OFFSET QUE LE PASEMOS, CREA LAS CARDS Y LAS IMPRIME EN EL CONTAINER
+const fetchAndPrintComics = async (offset) => {
+  const url = getURL();
+  const data = await getData(url);
+  const cards = createComicsCards(data);
+  cleanContainer();
+  printAll([cards]);
+};
+
 const fetchAndPrintCharacters = async (offset) =>{
   const urlOffsetKeys = `?limit=20&offset=${offset}&ts=${timestamp}&apikey=${publicKey}&hash=${hash}`;
   let arr = await getData(urlBase + urlCharacters + urlOffsetKeys);
@@ -53,9 +87,10 @@ const fetchAndPrintCharacters = async (offset) =>{
  
 }
 
+
 // FUNCION QUE CREA LAS CARDS DE LOS CHARACTERS, UNA DESPUÉS DE LA OTRA EN UNA SOLA VARIABLE - RECIBE EL ARRAY DEL FETCH Y RETORNA UN STRING CON TODAS LAS CARDS
-const createCharactersCards =  (arr) => {
-  let cards = '';
+const createCharactersCards = (arr) => {
+  let cards = "";
   arr.forEach((character) => {
     const {
       id,
@@ -76,12 +111,14 @@ const createCharactersCards =  (arr) => {
     `
     responsive();
   });
-  return (cards)
+
+  return cards;
 };
 
 
 
 // FUNCION QUE CREA LA CARD DE UN PERSONAJE SOLO
+
 const printOneCharacter =  ([characters]) => {
   console.log(characters);
   const {
@@ -131,7 +168,6 @@ const printOneCharacter =  ([characters]) => {
     printAll([cards])
   }
 
- 
 
 // FUNCION QUE TRAE EL CHARACTER SEGUN EL ID QUE LE PASEMOS, CREA LA CARD Y LA IMPRIME EN EL CONTAINER
 const clickOnCharacter = async (id) => {
@@ -181,16 +217,15 @@ const createComicsCards = (comics) => {
       });      
       return cards
     };
-{/* </div> */}
 
 // FUNCION QUE TRAE LOS CHARACTERS DEL COMIC, RECIBE LA URL Y DEVUELVE UN STR CON EL HTML DE LAS CARDS Y EL RESULTADO
-const getCharactersByComic = async (url) =>{
-  const data = await getData(url + urlKeys)
+const getCharactersByComic = async (url) => {
+  const data = await getData(url + urlKeys);
   const resultsAmount = data.length;
-  const cards = createCharactersCards(data)
+  const cards = createCharactersCards(data);
   return `<p>${resultsAmount} resultados</p>
-  <div class='grid-x'>${cards}</div>`
-}
+  <div class='grid-x'>${cards}</div>`;
+};
 
 // FUNCION QUE CREA UNA CARD DE UN COMIC EN CONCRETO, RECIBE UN ARRAY Y DEVUELVE LA CARD
 const createComicCard = async ([comic]) => {
@@ -227,7 +262,7 @@ const createComicCard = async ([comic]) => {
         <h4>Personajes</h4>
         ${charactersCards}
     </div>`;
-  return newCard
+  return newCard;
 };
 
 // FUNCION QUE RECIBE UN ARRAY DE CREADORES Y CHEQUEA CUALES DE ESOS SON ESCRITORES, DEVUELVE UN STRING CON TODOS LOS QUE LO SEAN
@@ -245,8 +280,8 @@ const getWriters = (arr) => {
 // FUNCION APLICADA A CADA COMIC, RECIBE EL ID DEL COMIC, HACE EL FETCH, CREA LA CARD DE ESE COMIC, LIMPIA EL CONTENDERO Y LA IMPRIME
 const clickOnComic = async (id) => {
   const urlComicId = `/v1/public/comics/${id}`;
-  const data = await getData(urlBase + urlComicId + urlKeys)
-  const card = await createComicCard(data) 
+  const data = await getData(urlBase + urlComicId + urlKeys);
+  const card = await createComicCard(data);
   cleanContainer();
   printAll([card]);
 };
@@ -258,7 +293,7 @@ const clickOnComic = async (id) => {
 // }
 
 //Función que toma el fetch de la api y retorna el total de comics existentes
-const getTotalComics =  (resp) => resp.data.total;
+const getTotalComics = (resp) => resp.data.total;
 
 //Funcion NO TESTEADA que chequea cuantas páginas deberían existir de acuerdo a la cantidad total de comics y cuantos comics quedan para la ultima pagina.
 // const checkAmountPages = (total) => {
@@ -281,7 +316,9 @@ getId("previous-page").addEventListener("click", () => {
     offset -= 20;
   }
   cleanContainer();
-  selectedCards === 'comics' ? fetchAndPrintComics(offset) : fetchAndPrintCharacters(offset)
+  selectedCards === "comics"
+    ? fetchAndPrintComics(offset)
+    : fetchAndPrintCharacters(offset);
   return offset;
 });
 
@@ -290,51 +327,63 @@ getId("next-page").addEventListener("click", () => {
   getId("previous-page").classList.remove("disabled");
   offset += 20;
   cleanContainer();
-  selectedCards === 'comics' ? fetchAndPrintComics(offset) : fetchAndPrintCharacters(offset)
+  selectedCards === "comics"
+    ? fetchAndPrintComics(offset)
+    : fetchAndPrintCharacters(offset);
   return offset;
 });
 
-
 // CAMBIAR ENTRE CHARACTERS Y COMICS -- TEMPORAL, DESPUES LO TENEMOS QUE ADAPTAR AL BOTON
 
-let selectedCards = '';
 
 // EVENTO APLICADO AL RADIO BUTTON DE SHOW COMICS. LIMPIA EL CONTENEDOR E IMPRIME LOS COMICS SEGUN EL OFFSET
-getId('show-comics').addEventListener('change', (e) =>{
-  if(e.target.checked === true){
-    selectedCards= 'comics';
+getId("show-comics").addEventListener("change", (e) => {
+  if (e.target.checked === true) {
+    selectedCards = "comics";
     changeOrderOptions(selectedCards);
     cleanContainer();
     fetchAndPrintComics(offset);
   }
-  return selectedCards
-})
+  return selectedCards;
+});
 
 // EVENTO APLICADO AL RADIO BUTTON DE SHOW CHARACTERS. LIMPIA EL CONTENEDOR E IMPRIME LOS CHARACTERS SEGUN EL OFFSET
-getId('show-characters').addEventListener('change', (e) =>{
-  if(e.target.checked === true){
-    selectedCards= 'characters';
+getId("show-characters").addEventListener("change", (e) => {
+  if (e.target.checked === true) {
+    selectedCards = "characters";
     changeOrderOptions(selectedCards);
     cleanContainer();
     fetchAndPrintCharacters();
   }
-  return selectedCards
-})
-
+  return selectedCards;
+});
 
 // FUNCION QUE CAMBIA LAS OPCIONES DE ORDEN SEGÚN MOSTREMOS LOS COMICS O LOS CHARACTERS
-const changeOrderOptions = (choice) =>{
-  if(choice === 'comics'){
-    getId('order-input').innerHTML = '<option value="a-z">A-Z</option><option value="z-a">Z-A</option><option value="newest">Más nuevos</option><option value="oldest">Más viejos</option>'
-  } else{
-    getId('order-input').innerHTML = '<option value="a-z">A-Z</option><option value="z-a">Z-A</option>'
+const changeOrderOptions = (choice) => {
+  if (choice === "comics") {
+    getId("order-input").innerHTML =
+      '<option value="title">A-Z</option><option value="-title">Z-A</option><option value="-focDate">Más nuevos</option><option value="focDate">Más viejos</option>';
+  } else {
+    getId("order-input").innerHTML =
+      '<option value="name">A-Z</option><option value="-name">Z-A</option>';
   }
+};
+
+getId("order-input").addEventListener("change", (e) => {
+  console.log('change');
+  selectedCards === 'comics' ? fetchAndPrintComics(offset) : fetchAndPrintCharacters(offset)
+});
+
+const handlerButtonSubmit = () =>{
+  selectedCards === 'comics' ? fetchAndPrintComics(offset) : fetchAndPrintCharacters(offset)
 }
 
+
 // EVENTO ON LOAD QUE CARGA LOS COMICS COMO OPCION DEFAULT EN LA PAGINA
-window.addEventListener('load', ()=>{
-  fetchAndPrintComics(offset)
-})
+window.addEventListener("load", () => {
+  fetchAndPrintComics(offset);
+});
+
 
 
 
@@ -347,3 +396,4 @@ const  responsive = async () => {
     adapt.forEach(card => card.style.height = '380px')
   }
 }
+
