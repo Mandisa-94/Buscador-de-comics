@@ -95,7 +95,7 @@ const createCharactersCards = (arr) => {
       thumbnail: { path, extension },
     } = character;
     cards += `
-    <div class="cell shrink">
+    <div class="cell shrink bottom">
     <div class="card align-self-midle adapt" style="width: 350px; height:600px; "onclick= "clickOnCharacter(${id})">
     <img class="comic-card-image" src="${
       path === pathNonFoundNowanted ? pathNonFoundWanted : path
@@ -176,11 +176,11 @@ const createComicsCards = (comics) => {
       thumbnail: { extension, path },
     } = comic;
 
-    const img = `${path}.${extension}`;
-    cards += `<div class="cell  shrink">
+    // const img = `${path}.${extension}`;
+    cards += `<div class="cell  shrink bottom top">
             <div class="card align-self-midle adapt" style="width: 350px; height:600px;" onclick="clickOnComic(${id})">
             <figure >
-            <img class="comic-card-image adapt" src=${
+            <img class="comic-card-image tiny" src=${
               path === pathNonFoundNowanted ? pathNonFoundWanted : path
             }.${extension}>
             </figure>
@@ -235,7 +235,7 @@ const createComicCard = async ([comic]) => {
         <h5>Descripción:</h5>
         <p>${description}</p>
       </div>
-      <div class="cell smal-12">
+      <div class="cell smal-12 margin">
         <h4>Personajes</h4>
         ${charactersCards}
     </div>`;
@@ -351,12 +351,16 @@ window.addEventListener("load", () => {
   fetchAndPrintComics(offset);
 });
 
+
+
 const responsive = async () => {
   await getData();
   const adapt = document.querySelectorAll(".adapt");
+  const tiny = document.querySelectorAll(".tiny");
   console.log(adapt);
   if (window.screen.width < 400) {
     adapt.forEach((card) => (card.style.width = "250px"));
     adapt.forEach((card) => (card.style.height = "380px"));
+    tiny.forEach((card) => (card.style.height = "280px"));
   }
 };
