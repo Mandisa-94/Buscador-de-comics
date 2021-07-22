@@ -10,29 +10,49 @@
 </head>
 
 <body>
-  <div class="grid-y">
-    <div class="cell small-12 header text-center">
+  <div class="grid-container full" style="background-color: blue;">
+  <!-- TITULO Y BANNER -->
+  <div class="grid-x  small-12">
+    <div class="cell small-12  text-center">
       <h1>Ada Comics</h1>
     </div>
-    <div class="cell small-12  light-gray">
-      <img src="https://www.zooplus.es/magazine/wp-content/uploads/2018/04/fotolia_169457098.jpg" alt="">
+    <!-- <div class=" cell small-12 medium-6 header text-center"> -->
+    <div class="cell small-12" style="background-color: black;">
+      <!-- media-object mediaobject-image-width-stacked -->
+      <img src="https://images-na.ssl-images-amazon.com/images/S/abs-image-upload-na/1/AmazonStores/ATVPDKIKX0DER/2504734a9f678f5327ba5e342c11ca7e.w1400.h280.jpg" style="width: 100%;">
+    </div>
+  </div>
+
+
+  <!-- MENU BUSQUEDA -->
+  <div class="grid-container full">
+  <div class="grid-x align-center grid-padding-x">
+    <!-- MENU HAMBURGUESA -->
+
+    <div class="cell small-12" data-responsive-toggle="responsive-menu" data-hide-for="medium">
+      <button class="menu-icon" type="button" data-toggle="responsive-menu"></button>
+      <!-- <div class="title-bar-title" style="color: white;" >Menu</div> -->
     </div>
 
-    <div class="grid-x align-center small-12">
-      <div class="title-bar cell" data-responsive-toggle="responsive-menu" data-hide-for="medium">
-        <button class="menu-icon" type="button" data-toggle="responsive-menu"></button>
-        <div class="title-bar-title">Menu</div>
+    <div class="grid-x small-12 grid-padding-x align-center" id="responsive-menu">
+
+      <div class="cell large-2">
+        <h2 class="h4">Búsqueda</h2>
+        <input type="search" placeholder="Ingresá tu búsqueda" id="search-input">
       </div>
-      <div class="cell small-8 grid-margin-x grid-x" id="responsive-menu">
+
+      <div class="cell large-2">
         <div class="cell">
+          /*
+
           <h2 class="h4">Búsqueda</h2>
         </div>
         <div class="cell small-4">
           <input type="search" placeholder="Ingresá tu búsqueda" id="search-input">
         </div>
         <div class="cell small-3 text-right">
-          <input type="radio" name="cards" value="comics" id="show-comics" required checked><label for="show-comics">Comics</label>
-          <input type="radio" name="cards" value="characters" id="show-characters"><label for="show-characters">Personajes</label>
+          <input type="radio" name="cards" value="comics" id="show-comics" required checked><label for="show-comics" style="color: white;">Comics</label>
+          <input type="radio" name="cards" value="characters" id="show-characters"><label for="show-characters" style="color: white;">Personajes</label>
         </div>
         <div class="cell small-3">
           <label class="cell">Orden
@@ -46,35 +66,63 @@
         </div>
         <div class="cell small-2 text-center">
           <button type="button" onclick="handlerButtonSubmit()" class="button">Buscar</button>
+
+          <input type="radio" name="cards" value="comics" id="show-comics" required checked>
+          <label for="show-comics"style="color: white;">Comics</label>
+        </div>
+        <div class="cell">
+          <input type="radio" name="cards" value="characters" id="show-characters">
+          <label for="show-characters"style="color: white;">Personajes</label>
+
         </div>
       </div>
-    </div>
-
-    <div class="grid-x grid-padding-x align-center ">
-      <h3 class="h5 cell small-8 header ">Resultados</h3>
-      <p class="cell small-8 header">1111 coincidencias</p>
-    </div>
-
-    <div class="grid-x grid-padding-x large-up-5" id="cards-container">
-
+*/
+      <div class="cell large-2 ">
+        <label class="cell" style="color: white;"> <h2 class="h4">Orden</h2>
+          <select id="order-input" style="color: white;">
+            <option value="a-z">A-Z</option>
+            <option value="z-a">Z-A</option>
+            <option value="newest">Más nuevos</option>
+            <option value="oldest">Más viejos</option>
+          </select>
+        </label>
+      </div>
     </div>
   </div>
-
-  <nav aria-label="Pagination">
-    <ul class="pagination text-center">
-      <li class="pagination-previous disabled" id="previous-page">Previous</li>
-      <li class="current"><span class="show-for-sr">You're on page</span> 1</li>
-      <li><a href="#" aria-label="Page 2">2</a></li>
-      <li><a href="#" aria-label="Page 3">3</a></li>
-      <li><a href="#" aria-label="Page 4">4</a></li>
-      <li class="ellipsis"></li>
-      <li><a href="#" aria-label="Page 12">12</a></li>
-      <li><a href="#" aria-label="Page 13">13</a></li>
-      <li class="pagination-next" id="next-page"><a href="#" aria-label="Next page">Next</a></li>
-    </ul>
-  </nav>
+  <!-- <div class="cell small-2 text-center">
+        <button type="submit" onclick="handlerButtonSubmit(e)" class="button">Buscar</button>
+      </div> -->
   </div>
 
+
+  <div class="grid-x grid-padding-x align-center medium-6 small-12">
+    <h3 class="h5 cell small-8 header ">Resultados</h3>
+    <p class="cell small-8 header">1111 coincidencias</p>
+  </div>
+
+
+  <div class="grid-container fluid">
+<div class=" grid-x align-center  medium-6 small-12 align-self-midle grid-padding-x" id="cards-container"></div>
+  </div>
+  
+
+
+  <div class="grid-x grid-padding-x">
+    <nav aria-label="Pagination" class="cell align-center">
+      <ul class="pagination text-center">
+        <li class="pagination-previous disabled" id="previous-page">Previous</li>
+        <li class="current"><span class="show-for-sr">You're on page</span> 1</li>
+        <li><a href="#" aria-label="Page 2">2</a></li>
+        <li><a href="#" aria-label="Page 3">3</a></li>
+        <li><a href="#" aria-label="Page 4">4</a></li>
+        <li class="ellipsis"></li>
+        <li><a href="#" aria-label="Page 12">12</a></li>
+        <li><a href="#" aria-label="Page 13">13</a></li>
+        <li class="pagination-next" id="next-page"><a href="#" aria-label="Next page">Next</a></li>
+      </ul>
+    </nav>
+  </div>
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.18.0/js/md5.min.js"
     integrity="sha512-Hmp6qDy9imQmd15Ds1WQJ3uoyGCUz5myyr5ijainC1z+tP7wuXcze5ZZR3dF7+rkRALfNy7jcfgS5hH8wJ/2dQ=="
     crossorigin="anonymous"></script>
@@ -82,6 +130,7 @@
   <script src="node_modules/what-input/dist/what-input.js"></script>
   <script src="node_modules/foundation-sites/dist/js/foundation.js"></script>
   <script src="js/app.js"></script>
+  </div>
 </body>
 
 </html>
