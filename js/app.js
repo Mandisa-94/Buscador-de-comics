@@ -72,20 +72,20 @@ const fetchAndPrintCharacters = async (offset) => {
 
 // FUNCION QUE TRAE LOS COMICS SEGUN EL OFFSET QUE LE PASEMOS, CREA LAS CARDS Y LAS IMPRIME EN EL CONTAINER
 const fetchAndPrintComics = async (offset) => {
-  const url = getURL();
+  const url = getURL(offset);
   const data = await getData(url);
   const cards = createComicsCards(data);
   cleanContainer();
   printAll([cards]);
 };
 
-const fetchAndPrintCharacters = async (offset) =>{
-  const urlOffsetKeys = `?limit=20&offset=${offset}&ts=${timestamp}&apikey=${publicKey}&hash=${hash}`;
-  let arr = await getData(urlBase + urlCharacters + urlOffsetKeys);
-  let info = createCharactersCards(arr); 
- return  printAll([info])
+// const fetchAndPrintCharacters = async (offset) =>{
+//   const urlOffsetKeys = `?limit=20&offset=${offset}&ts=${timestamp}&apikey=${publicKey}&hash=${hash}`;
+//   let arr = await getData(urlBase + urlCharacters + urlOffsetKeys);
+//   let info = createCharactersCards(arr); 
+//  return  printAll([info])
  
-}
+// }
 
 
 // FUNCION QUE CREA LAS CARDS DE LOS CHARACTERS, UNA DESPUÉS DE LA OTRA EN UNA SOLA VARIABLE - RECIBE EL ARRAY DEL FETCH Y RETORNA UN STRING CON TODAS LAS CARDS
@@ -179,12 +179,12 @@ const clickOnCharacter = async (id) => {
 };
 
 // FUNCION QUE TRAE LOS COMICS SEGUN EL OFFSET QUE LE PASEMOS, CREA LAS CARDS Y LAS IMPRIME EN EL CONTAINER
-const fetchAndPrintComics = async(offset) =>{
-  const urlOffsetKeys = `?limit=20&offset=${offset}&ts=${timestamp}&apikey=${publicKey}&hash=${hash}`;
-  const data = await getData(urlBase + urlComics + urlOffsetKeys)
-  const cards = createComicsCards(data);
-  printAll([cards])
-}
+// const fetchAndPrintComics = async(offset) =>{
+//   const urlOffsetKeys = `?limit=20&offset=${offset}&ts=${timestamp}&apikey=${publicKey}&hash=${hash}`;
+//   const data = await getData(urlBase + urlComics + urlOffsetKeys)
+//   const cards = createComicsCards(data);
+//   printAll([cards])
+// }
 
 
 
