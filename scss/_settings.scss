@@ -69,7 +69,7 @@ $global-font-size: 100%;
 $global-width: rem-calc(1200);
 $global-lineheight: 1.5;
 $foundation-palette: (
-  primary: #1779ba,
+  primary: #fff,
   secondary: #767676,
   success: #3adb76,
   warning: #ffae00,
@@ -78,11 +78,11 @@ $foundation-palette: (
 $light-gray: #e6e6e6;
 $medium-gray: #cacaca;
 $dark-gray: #8a8a8a;
-$black: #0a0a0a;
-$white: #fefefe;
+$black: black;
+$white: white;
 $body-background: $white;
-$body-font-color: $black;
-$body-font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
+$body-font-color: white;
+$body-font-family:  Roboto;
 $body-antialiased: true;
 $global-margin: 1rem;
 $global-padding: 1rem;
@@ -409,7 +409,7 @@ $dropdown-sizes: (
 // -----------------
 
 $dropdownmenu-arrows: true;
-$dropdownmenu-arrow-color: $anchor-color;
+$dropdownmenu-arrow-color: $white;
 $dropdownmenu-arrow-size: 6px;
 $dropdownmenu-arrow-padding: 1.5rem;
 $dropdownmenu-min-width: 200px;
@@ -444,20 +444,20 @@ $input-prefix-background: $light-gray;
 $input-prefix-border: 1px solid $medium-gray;
 $input-prefix-padding: 1rem;
 $form-label-color: $black;
-$form-label-font-size: rem-calc(14);
+$form-label-font-size: rem-calc(16);
 $form-label-font-weight: $global-weight-normal;
 $form-label-line-height: 1.8;
-$select-background: $white;
+$select-background: $black;
 $select-triangle-color: $dark-gray;
 $select-radius: $global-radius;
-$input-color: $black;
+$input-color: $white;
 $input-placeholder-color: $medium-gray;
 $input-font-family: inherit;
 $input-font-size: rem-calc(16);
 $input-font-weight: $global-weight-normal;
 $input-line-height: $global-lineheight;
-$input-background: $white;
-$input-background-focus: $white;
+$input-background: $black;
+$input-background-focus: $black;
 $input-background-disabled: $light-gray;
 $input-border: 1px solid $medium-gray;
 $input-border-focus: 1px solid $dark-gray;
@@ -556,7 +556,7 @@ $orbit-control-zindex: 10;
 
 $pagination-font-size: rem-calc(14);
 $pagination-margin-bottom: $global-margin;
-$pagination-item-color: $black;
+$pagination-item-color: $white;
 $pagination-item-padding: rem-calc(3 10);
 $pagination-item-spacing: rem-calc(1);
 $pagination-radius: $global-radius;
