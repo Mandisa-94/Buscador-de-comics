@@ -1,8 +1,8 @@
 // -------------------------------- FOUNDATION --------------------------------
-//  $(document).foundation();
-$(function() {
-  $(document).foundation();
-});
+ $(document).foundation();
+// $(function() {
+//   $(document).foundation();
+// });
 
 //-------------------------------- GET FROM DOM FUNCS --------------------------------
 
