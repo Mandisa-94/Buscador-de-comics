@@ -21,6 +21,7 @@ const pathNonFoundNowanted =
   "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available";
 const pathNonFoundWanted =
   "http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available/portrait_uncanny";
+const limitPerPage = 20;
 let offset = 0;
 let selectedCards = "comics";
 
@@ -40,9 +41,11 @@ const cleanContainer = () => {
 
 // FUNCION QUE IMPRIME EN EL CONTENEDOR TODO LO QUE LE PASEMOS, EN ORDEN - RECIBE ARRAY SINO TIRA ERROR
 const printAll = (arr) => {
+  getPagesInfo();
   arr.forEach((html) => {
     getId("cards-container").insertAdjacentHTML("beforeend", html);
   });
+  return pagesData;
 };
 
 // FUNCION QUE CHEQUEA QUE DESEAMOS MOSTRAR, EN QUE ORDEN Y SI QUEREMOS FILTRARLO PARA DEVOLVER LA URL PARA HACERLE EL FETCH
@@ -64,24 +67,22 @@ const getURL = (offset) => {
 
 const fetchAndPrintCharacters = async (offset) => {
   const url = getURL(offset);
-  console.log(url);
   let arr = await getData(url);
   showResultsAmount(url);
   let cards = createCharactersCards(arr);
   cleanContainer();
-  toggleResultsHeader('flex');
+  toggleResultsHeader("flex");
   printAll([cards]);
 };
 
 // FUNCION QUE TRAE LOS COMICS SEGUN EL OFFSET QUE LE PASEMOS, CREA LAS CARDS Y LAS IMPRIME EN EL CONTAINER
 const fetchAndPrintComics = async (offset) => {
   const url = getURL(offset);
-  console.log(url);
   const data = await getData(url);
   showResultsAmount(url);
   const cards = createComicsCards(data);
   cleanContainer();
-  toggleResultsHeader('flex');
+  toggleResultsHeader("flex");
   printAll([cards]);
 };
 
@@ -121,7 +122,6 @@ const printOneCharacter = ([characters]) => {
     description,
     comics: { items },
   } = characters;
-
   const characterCard = `
   <div class="cell small-4">
   <img src="${
@@ -143,16 +143,16 @@ const printOneCharacter = ([characters]) => {
 
 const printInfoCaracters = (items) => {
   items.forEach((info) => {
-    const { resourceURI, name } = info;
+    const { resourceURI } = info;
     getComicsByCharacter(resourceURI);
   });
 };
 
 const getComicsByCharacter = async (url) => {
   const data = await getData(url + urlKeys);
-  console.log(data);
   const resultsAmount = data.length;
   const cards = createComicsCards(data);
+  togglePaginationDisabled("all");
   printAll([cards]);
 };
 
@@ -160,7 +160,7 @@ const getComicsByCharacter = async (url) => {
 const clickOnCharacter = async (id) => {
   const data = await getData(`${urlBase}${urlCharacters}/${id}${urlKeys}`);
   const card = printOneCharacter(data);
-  toggleResultsHeader('none');
+  toggleResultsHeader("none");
   cleanContainer();
   printAll([card]);
 };
@@ -178,18 +178,18 @@ const createComicsCards = (comics) => {
 
     // const img = `${path}.${extension}`;
     cards += `<div class="cell  shrink bottom top">
-            <div class="card align-self-midle adapt" style="width: 350px; height:600px;" onclick="clickOnComic(${id})">
-            <figure >
-            <img class="comic-card-image tiny" src=${
-              path === pathNonFoundNowanted ? pathNonFoundWanted : path
-            }.${extension}>
-            </figure>
-            <div class="card-section">
-            <h4>${title}</h4>
-            </div>
-            </div>
-            </div>
-        `;
+    <div class="card align-self-midle adapt" style="width: 350px; height:600px;" onclick="clickOnComic(${id})">
+    <figure >
+    <img class="comic-card-image tiny" src=${
+      path === pathNonFoundNowanted ? pathNonFoundWanted : path
+    }.${extension}>
+    </figure>
+    <div class="card-section">
+    <h4>${title}</h4>
+    </div>
+    </div>
+    </div>
+    `;
     responsive();
   });
   return cards;
@@ -199,6 +199,7 @@ const createComicsCards = (comics) => {
 const getCharactersByComic = async (url) => {
   const data = await getData(url + urlKeys);
   const resultsAmount = data.length;
+  togglePaginationDisabled("all");
   const cards = createCharactersCards(data);
   return `<p>${resultsAmount} resultados</p>
   <div class='grid-x'>${cards}</div>`;
@@ -222,23 +223,23 @@ const createComicCard = async ([comic]) => {
   const charactersCards = await getCharactersByComic(collectionURI);
   const img = `${path}.${extension}`;
   const newCard = `<div class="cell small-4">
-        <figure>
-          <img src=${img}>
-        </figure>
-      </div>
-      <div class="cell small-7">
-        <h4>${title}</h4>
-        <h5>Publicado:</h5>
-        <p>${date}</p>
-        <h5>Guionistas:</h5>
-        <p>${writers}</p>
-        <h5>Descripción:</h5>
-        <p>${description}</p>
-      </div>
-      <div class="cell smal-12 margin">
-        <h4>Personajes</h4>
-        ${charactersCards}
-    </div>`;
+  <figure>
+  <img src=${img}>
+  </figure>
+  </div>
+  <div class="cell small-7">
+  <h4>${title}</h4>
+  <h5>Publicado:</h5>
+  <p>${date}</p>
+  <h5>Guionistas:</h5>
+  <p>${writers}</p>
+  <h5>Descripción:</h5>
+  <p>${description}</p>
+  </div>
+  <div class="cell smal-12 margin">
+  <h4>Personajes</h4>
+  ${charactersCards}
+  </div>`;
   return newCard;
 };
 
@@ -259,56 +260,124 @@ const clickOnComic = async (id) => {
   const urlComicId = `/v1/public/comics/${id}`;
   const data = await getData(urlBase + urlComicId + urlKeys);
   const card = await createComicCard(data);
-  toggleResultsHeader('none');
+  toggleResultsHeader("none");
   cleanContainer();
   printAll([card]);
 };
 
 //Función que toma el fetch de la api y retorna el total de comics existentes
-const getTotalComics = async (url) => 
-  await fetch(url)
-  .then((resp) => resp.json())
-  .then((resp) => resp.data.total)
-  .catch((err) => console.error(err));
+const getTotalResults = async () =>
+  await fetch(getURL(offset))
+    .then((resp) => resp.json())
+    .then((resp) => resp.data.total)
+    .catch((err) => console.error(err));
 
+const showResultsAmount = async (url) => {
+  const total = await getTotalResults(url);
+  getId("results-amount").innerText = `${total} conincidencias`;
+};
 
-const showResultsAmount = async (url) =>{
-  const total = await getTotalComics(url);
-  getId('results-amount').innerText = `${total} conincidencias`
-}
+const toggleResultsHeader = (display) => {
+  getId("results-header-container").style.display = display;
+};
 
-const toggleResultsHeader = (display) =>{
-  getId('results-header-container').style.display = display;
-}
+const togglePaginationDisabled = (toDisable) => {
+  if (toDisable === "next") {
+    getId("first-page").classList.remove("disabled");
+    getId("previous-page").classList.remove("disabled");
+    getId("last-page").classList.add("disabled");
+    getId("next-page").classList.add("disabled");
+  } else if (toDisable === "previous") {
+    getId("first-page").classList.add("disabled");
+    getId("previous-page").classList.add("disabled");
+    getId("last-page").classList.remove("disabled");
+    getId("next-page").classList.remove("disabled");
+  } else if(toDisable === 'all'){
+    getId("first-page").classList.add("disabled");
+    getId("previous-page").classList.add("disabled");
+    getId("last-page").classList.add("disabled");
+    getId("next-page").classList.add("disabled");
+  } else {
+    getId("first-page").classList.remove("disabled");
+    getId("previous-page").classList.remove("disabled");
+    getId("last-page").classList.remove("disabled");
+    getId("next-page").classList.remove("disabled");
+  }
+};
+
+let pagesData = {};
+const getPagesInfo = async () => {
+  const totalResults = await getTotalResults();
+  const rest = totalResults % limitPerPage;
+  const isExact = rest === 0;
+  const pages = Math.ceil(totalResults / limitPerPage);
+  const data = {
+    lastpage: totalResults - rest,
+    isExact,
+    totalPages: pages,
+  };
+  pagesData = data;
+  return pagesData;
+};
+
+//Evento del boton de First page, que setea el offset a 0, vuelve a la primera página y retorna el offset al ambito global
+getId("first-page").addEventListener("click", () => {
+  offset = 0;
+  cleanContainer();
+  selectedCards === "comics"
+    ? fetchAndPrintComics(offset)
+    : fetchAndPrintCharacters(offset);
+  togglePaginationDisabled("previous");
+  return offset;
+});
 
 //Evento del boton de Previous page, le resta 20 comics al offset(una pagina) y lo retorna al ambito global
 getId("previous-page").addEventListener("click", () => {
   if (offset !== 0) {
-    offset -= 20;
+    offset -= limitPerPage;
   }
   cleanContainer();
   selectedCards === "comics"
     ? fetchAndPrintComics(offset)
     : fetchAndPrintCharacters(offset);
+  offset === 0
+    ? togglePaginationDisabled("previous")
+    : togglePaginationDisabled("none");
   return offset;
 });
 
 //Evento del boton de Next page, le suma 20 comics al offset(una pagina) y lo retorna al ambito global
-getId("next-page").addEventListener("click", () => {
-  getId("previous-page").classList.remove("disabled");
-  offset += 20;
+getId("next-page").addEventListener("click", async () => {
+  offset +=
+    offset / limitPerPage !== pagesData.totalPages - 1
+      ? limitPerPage
+      : pagesData.lastpage;
   cleanContainer();
   selectedCards === "comics"
     ? fetchAndPrintComics(offset)
     : fetchAndPrintCharacters(offset);
+  offset === pagesData.lastpage
+    ? togglePaginationDisabled("next")
+    : togglePaginationDisabled("none");
   return offset;
 });
 
-// CAMBIAR ENTRE CHARACTERS Y COMICS -- TEMPORAL, DESPUES LO TENEMOS QUE ADAPTAR AL BOTON
+// Evento del boton de Last page, calcula cuantos  y lo retorna al ambito global
+getId("last-page").addEventListener("click", () => {
+  offset = pagesData.isExact
+    ? pagesData.totalPages * limitPerPage
+    : pagesData.lastpage;
+  cleanContainer();
+  selectedCards === "comics"
+    ? fetchAndPrintComics(offset)
+    : fetchAndPrintCharacters(offset);
+  togglePaginationDisabled("next");
+  return offset;
+});
 
 // EVENTO APLICADO AL RADIO BUTTON DE SHOW COMICS. LIMPIA EL CONTENEDOR E IMPRIME LOS COMICS SEGUN EL OFFSET
 getId("show-comics").addEventListener("change", (e) => {
-  if (e.target.checked === true) {
+  if (e.target.checked) {
     selectedCards = "comics";
     changeOrderOptions(selectedCards);
     cleanContainer();
@@ -319,7 +388,7 @@ getId("show-comics").addEventListener("change", (e) => {
 
 // EVENTO APLICADO AL RADIO BUTTON DE SHOW CHARACTERS. LIMPIA EL CONTENEDOR E IMPRIME LOS CHARACTERS SEGUN EL OFFSET
 getId("show-characters").addEventListener("change", (e) => {
-  if (e.target.checked === true) {
+  if (e.target.checked) {
     selectedCards = "characters";
     changeOrderOptions(selectedCards);
     cleanContainer();
@@ -330,6 +399,8 @@ getId("show-characters").addEventListener("change", (e) => {
 
 // FUNCION QUE CAMBIA LAS OPCIONES DE ORDEN SEGÚN MOSTREMOS LOS COMICS O LOS CHARACTERS
 const changeOrderOptions = (choice) => {
+  offset = 0;
+  togglePaginationDisabled("previous");
   if (choice === "comics") {
     getId("order-input").innerHTML =
       '<option value="title">A-Z</option><option value="-title">Z-A</option><option value="-focDate">Más nuevos</option><option value="focDate">Más viejos</option>';
@@ -341,23 +412,24 @@ const changeOrderOptions = (choice) => {
 
 // Handler de evento que se le pasa al input para que haga el fetch segun las cards seleccionadas sean comics o characters
 const handlerFetch = () => {
+  offset = 0;
+  togglePaginationDisabled("previous");
   selectedCards === "comics"
     ? fetchAndPrintComics(offset)
     : fetchAndPrintCharacters(offset);
+  return offset;
 };
 
 // EVENTO ON LOAD QUE CARGA LOS COMICS COMO OPCION DEFAULT EN LA PAGINA
 window.addEventListener("load", () => {
   fetchAndPrintComics(offset);
+  getPagesInfo();
 });
-
-
 
 const responsive = async () => {
   await getData();
   const adapt = document.querySelectorAll(".adapt");
   const tiny = document.querySelectorAll(".tiny");
-  console.log(adapt);
   if (window.screen.width < 400) {
     adapt.forEach((card) => (card.style.width = "250px"));
     adapt.forEach((card) => (card.style.height = "380px"));
