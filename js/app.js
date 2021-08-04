@@ -1,5 +1,5 @@
 // -------------------------------- FOUNDATION --------------------------------
-
+import Foundation from 'foundation-sites';
 $(document).foundation();
 
 //-------------------------------- GET FROM DOM FUNCS --------------------------------
