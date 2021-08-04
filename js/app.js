@@ -1,6 +1,7 @@
 // -------------------------------- FOUNDATION --------------------------------
 // import Foundation from 'foundation-sites';
-$(document).foundation();
+ $(document).foundation();
+ 
 
 //-------------------------------- GET FROM DOM FUNCS --------------------------------
 
