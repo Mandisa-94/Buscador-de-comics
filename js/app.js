@@ -1,7 +1,8 @@
 // -------------------------------- FOUNDATION --------------------------------
 // import Foundation from 'foundation-sites';
  $(document).foundation();
- 
+ $('#foo').foundation(); // initialize all plugins within the element `#foo`
+$('.has-tip').foundation(); // initialize all tooltips on the page.
 
 //-------------------------------- GET FROM DOM FUNCS --------------------------------
 
