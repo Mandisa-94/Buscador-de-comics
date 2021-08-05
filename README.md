@@ -1,47 +1,73 @@
-# Foundation for Sites Template
+<div align="center" >
 
-**Please open all issues with this template on the main [Foundation for Sites](https://github.com/zurb/foundation-sites/issues) repo.**
+<img src="https://media.giphy.com/media/10ADhj1QPawFna/giphy.gif" width="100%">
 
-This is the basic starter project for [Foundation for Sites 6](http://foundation.zurb.com/sites). It includes a Sass compiler and a starter HTML file for you.
+ <div>
 
-## Installation
+# Buscador de comics
 
-To use this template, your computer needs:
+### En este sitio web vas a poder encontrar todos los comics que ofrece Marvel, conocer detalles de tus Héroes favoritos y ver en que historias están involucrad@s. 
+***
+<br>
 
-- [NodeJS](https://nodejs.org/en/) (0.12 or greater)
-- [Git](https://git-scm.com/)
+### Comenza a usarla haciendo click [aquí](https://mandisa-94.github.io/Buscador-de-comics/)
 
-This template can be installed with the Foundation CLI, or downloaded and set up manually.
+</br>
 
-### Using the CLI
+***
+<br>
 
-Install the Foundation CLI with this command:
+## Conocé la vista de escritorio 
+![Imagen](./img/capture.png)
 
-```bash
-npm install foundation-cli --global
+</br>
+
+***
+<br>
+
+## Instalación ⚙
+#### Si querés clonar el repositorio seguí estos pasos:
+![Imagen](https://media.giphy.com/media/11e56tPCqD9kjK/giphy.gif)
+
+ Entrar al [Repo](https://github.com/Mandisa-94/Buscador-de-comics)
+
+ Hacer click en Fork
+
+ Darle click al boton de Code
+
+ Copiar la url
+
+ Desde tu terminal local posicionate en la carpeta donde lo vas a clonar
+
+ Escribir el siguiente comando:
 ```
-
-Use this command to set up a blank Foundation for Sites project with this template:
-
-```bash
-foundation new --framework sites --template basic
+git clone <url>
 ```
+ Entrar a la carpeta del proyecto y abrirlo en tu IDE y listo, ya vas a contar con el proyecto en tu pc.
 
-The CLI will prompt you to give your project a name. The template will be downloaded into a folder with this name.
+</br>
 
-### Manual Setup
+***
+<br>
 
-To manually set up the template, first download it with Git:
+## Diseño 🎨
 
-```bash
-git clone https://github.com/zurb/foundation-sites-template projectname
-```
+#### Para el diseño de la interfaz utilizamos el Framework [Foundation](https://get.foundation/).
 
-Then open the folder in your command line, and install the needed dependencies:
+</br>
 
-```bash
-cd projectname
-npm install
-```
+***
+<br>
 
-Finally, run `npm start` to run the Sass compiler. It will re-run every time you save a Sass file.
+## Contacto 📱
+[Melina Cantamutto](https://www.linkedin.com/in/melina-luc%C3%ADa-cantamutto-35b8141b9/)
+
+[Gabriela Duran](https://www.linkedin.com/in/gabriela-duran94/)
+
+***
+<br>
+
+## Agradecimientos 💕
+
+ Principalmente a nuestro profe [Jonh](https://github.com/Jonhks), a [Leydy](https://github.com/leydyk93) y a las chicas de la sexta generación de Frontend online de [Ada](https://adaitw.org/) 🧚🏻‍♀️ y a su apoyo todos los días.
+ Si te gustó y lo queres compartir, te agradeciríamos muchisimo.
