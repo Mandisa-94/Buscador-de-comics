@@ -10,7 +10,7 @@
 ***
 <br>
 
-### Comenza a usarla haciendo click [aquí](https://mandisa-94.github.io/Buscador-de-comics/)
+### Comenza a usarlo haciendo click [aquí](https://mandisa-94.github.io/Buscador-de-comics/)
 
 </br>
 
@@ -28,6 +28,7 @@
 ## Instalación ⚙
 #### Si querés clonar el repositorio seguí estos pasos:
 ![Imagen](https://media.giphy.com/media/11e56tPCqD9kjK/giphy.gif)
+
 
  Entrar al [Repo](https://github.com/Mandisa-94/Buscador-de-comics)
 
@@ -71,3 +72,5 @@ git clone <url>
 
  Principalmente a nuestro profe [Jonh](https://github.com/Jonhks), a [Leydy](https://github.com/leydyk93) y a las chicas de la sexta generación de Frontend online de [Ada](https://adaitw.org/) 🧚🏻‍♀️ y a su apoyo todos los días.
  Si te gustó y lo queres compartir, te agradeciríamos muchisimo.
+
+ ![Imagen](https://media.giphy.com/media/l46Cnk4ZRTlfeI32o/giphy.gif)
