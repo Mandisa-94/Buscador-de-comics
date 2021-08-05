@@ -153,7 +153,7 @@ const printInfoCaracters = (items) => {
 
 const getComicsByCharacter = async (url) => {
   const urlImproved = url.replace('http://', '//');
-  const data = await getData(urlurlImproved + urlKeys);
+  const data = await getData(urlImproved + urlKeys);
   const resultsAmount = data.length;
   const cards = createComicsCards(data);
   togglePaginationDisabled("all");
