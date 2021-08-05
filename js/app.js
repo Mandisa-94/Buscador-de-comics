@@ -152,7 +152,8 @@ const printInfoCaracters = (items) => {
 };
 
 const getComicsByCharacter = async (url) => {
-  const data = await getData(url + urlKeys);
+  const urlImproved = url.replace('http://', '//');
+  const data = await getData(urlurlImproved + urlKeys);
   const resultsAmount = data.length;
   const cards = createComicsCards(data);
   togglePaginationDisabled("all");
@@ -200,7 +201,8 @@ const createComicsCards = (comics) => {
 
 // FUNCION QUE TRAE LOS CHARACTERS DEL COMIC, RECIBE LA URL Y DEVUELVE UN STR CON EL HTML DE LAS CARDS Y EL RESULTADO
 const getCharactersByComic = async (url) => {
-  const data = await getData(url + urlKeys);
+  const urlImproved = url.replace('http://', '//');
+  const data = await getData(urlImproved + urlKeys);
   const resultsAmount = data.length;
   togglePaginationDisabled("all");
   const cards = createCharactersCards(data);
